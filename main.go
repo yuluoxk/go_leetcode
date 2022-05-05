@@ -1,13 +1,55 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// 169
-	a := []int{1, 2, 2, 3, 4, 2, 2, 2}
+	//a := []int{1, 2, 2, 3, 4, 2, 2, 2}
 	//b := majorityElement(a)
-	c := rob(a)
-	fmt.Println(c)
+	a := [][]byte{{1, 1, 1, 1, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 0, 0, 0}}
+	b := numIslands(a)
+	fmt.Println(b)
+}
+
+// 200. 岛屿数量
+// '1' 和 1 不是一个东西
+func numIslands(grid [][]byte) int {
+	if grid == nil || len(grid) == 0 {
+		return 0
+	}
+	count := 0
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			if grid[i][j] == byte(1) {
+				count++
+				dfs(grid, i, j)
+
+			}
+		}
+	}
+	return count
+}
+
+func dfs(grid [][]byte, r int, c int) {
+	if grid == nil || len(grid) == 0 {
+		return
+	}
+	if r < 0 || r >= len(grid) || c < 0 || c >= len(grid[0]) {
+		return
+	}
+	if grid[r][c] == '0' {
+		return
+	}
+	if grid[r][c] == '2' {
+		return
+	}
+	grid[r][c] = '2'
+	dfs(grid, r-1, c)
+	dfs(grid, r+1, c)
+	dfs(grid, r, c-1)
+	dfs(grid, r, c+1)
 }
 
 // 198 打家劫舍
