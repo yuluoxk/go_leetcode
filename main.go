@@ -1,19 +1,59 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
 	// 169
 	//a := []int{1, 2, 2, 3, 4, 2, 2, 2}
 	//b := majorityElement(a)
-	a := [][]byte{{1, 1, 1, 1, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 0, 0, 0}}
-	b := numIslands(a)
-	fmt.Println(b)
+	//a := [][]byte{{1, 1, 1, 1, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 0, 0, 0}}
+	//a := [][]byte{{'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '0', '0', '0'}}
+	//b := numIslands(a)
+	//fmt.Println(b)
+	l5 := ListNode{Val: 5, Next: nil}
+	l4 := ListNode{Val: 4, Next: &l5}
+	l3 := ListNode{Val: 3, Next: &l4}
+	l2 := ListNode{Val: 2, Next: &l3}
+	l1 := ListNode{Val: 1, Next: &l2}
+	lp := reverseList(&l1)
+	fmt.Println(lp.Val)
+	fmt.Println(lp.Next.Val)
+	fmt.Println(lp.Next.Next.Val)
+	fmt.Println(lp.Next.Next.Next.Val)
+	fmt.Println(lp.Next.Next.Next.Next.Val)
+	fmt.Println(lp.Next.Next.Next.Next.Val)
+}
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+// 206. 反转链表
+func reverseList(head *ListNode) *ListNode {
+	var pre *ListNode
+	curr := head
+	for curr != nil {
+		var nextNode = curr.Next
+		curr.Next = pre
+		pre = curr
+		curr = nextNode
+	}
+	return pre
+}
+
+func testByte() {
+	//a := []byte {1,2,3,1,2,3}
+	a := []byte{'1', '2', '3', '1', '2', '3'}
+	for _, value := range a {
+		if value == 1 {
+			fmt.Println(value)
+		}
+	}
 }
 
 // 200. 岛屿数量
+//grid [][]byte 没有指定数量是切片
 // '1' 和 1 不是一个东西
 func numIslands(grid [][]byte) int {
 	if grid == nil || len(grid) == 0 {
@@ -22,7 +62,7 @@ func numIslands(grid [][]byte) int {
 	count := 0
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[i]); j++ {
-			if grid[i][j] == byte(1) {
+			if grid[i][j] == '1' {
 				count++
 				dfs(grid, i, j)
 
