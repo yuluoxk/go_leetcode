@@ -12,7 +12,8 @@ func main() {
 // 169 多数元素
 func majorityElement(nums []int) int {
 	var endNum, count int = nums[0], 1
-	for _, value := range nums {
+	for i := 1; i < len(nums); i++ {
+		value := nums[i]
 		if endNum == value {
 			count++
 		} else {
