@@ -10,18 +10,58 @@ func main() {
 	//a := [][]byte{{'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '0', '0', '0'}}
 	//b := numIslands(a)
 	//fmt.Println(b)
-	l5 := ListNode{Val: 5, Next: nil}
-	l4 := ListNode{Val: 4, Next: &l5}
-	l3 := ListNode{Val: 3, Next: &l4}
-	l2 := ListNode{Val: 2, Next: &l3}
-	l1 := ListNode{Val: 1, Next: &l2}
-	lp := reverseList(&l1)
-	fmt.Println(lp.Val)
-	fmt.Println(lp.Next.Val)
-	fmt.Println(lp.Next.Next.Val)
-	fmt.Println(lp.Next.Next.Next.Val)
-	fmt.Println(lp.Next.Next.Next.Next.Val)
-	fmt.Println(lp.Next.Next.Next.Next.Val)
+
+	// 206. 反转链表
+	//l5 := ListNode{Val: 5, Next: nil}
+	//l4 := ListNode{Val: 4, Next: &l5}
+	//l3 := ListNode{Val: 3, Next: &l4}
+	//l2 := ListNode{Val: 2, Next: &l3}
+	//l1 := ListNode{Val: 1, Next: &l2}
+	//lp := reverseList(&l1)
+	//fmt.Println(lp.Val)
+	//fmt.Println(lp.Next.Val)
+	//fmt.Println(lp.Next.Next.Val)
+	//fmt.Println(lp.Next.Next.Next.Val)
+	//fmt.Println(lp.Next.Next.Next.Next.Val)
+	//fmt.Println(lp.Next.Next.Next.Next.Val)
+	pre := [][]int{{1, 0}}
+	a := canFinish(2, pre)
+	fmt.Println(a)
+}
+
+//207. 课程表
+func canFinish(numCourses int, prerequisites [][]int) bool {
+	var (
+		edges  = make([][]int, numCourses)
+		indeg  = make([]int, numCourses)
+		result []int
+	)
+
+	for _, info := range prerequisites {
+		edges[info[1]] = append(edges[info[1]], info[0])
+		indeg[info[0]]++
+	}
+
+	q := []int{}
+	for i := 0; i < numCourses; i++ {
+		if indeg[i] == 0 {
+			q = append(q, i)
+		}
+	}
+
+	for len(q) > 0 {
+		u := q[0]
+		q = q[1:]
+		result = append(result, u)
+		for _, v := range edges[u] {
+			indeg[v]--
+			if indeg[v] == 0 {
+				q = append(q, v)
+			}
+		}
+	}
+
+	return len(result) == numCourses
 }
 
 type ListNode struct {
