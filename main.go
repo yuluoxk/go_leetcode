@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// 169
@@ -24,9 +26,52 @@ func main() {
 	//fmt.Println(lp.Next.Next.Next.Val)
 	//fmt.Println(lp.Next.Next.Next.Next.Val)
 	//fmt.Println(lp.Next.Next.Next.Next.Val)
-	pre := [][]int{{1, 0}}
-	a := canFinish(2, pre)
+	pre := [][]int{{1, 0}, {1, 2}, {2, 3}, {3, 4}}
+	a := canFinish(5, pre)
 	fmt.Println(a)
+}
+
+// 208. 实现 Trie (前缀树)
+type Trie struct {
+	children [26]*Trie
+	isEnd    bool
+}
+
+func Constructor() Trie {
+	return Trie{}
+}
+
+func (this *Trie) Insert(word string) {
+	node := this
+	for _, ch := range word {
+		ch -= 'a'
+		if node.children[ch] == nil {
+			node.children[ch] = &Trie{}
+		}
+		node = node.children[ch]
+	}
+	node.isEnd = true
+}
+
+func (this *Trie) SearchPrefix(word string) *Trie {
+	node := this
+	for _, ch := range word {
+		ch -= 'a'
+		if node.children[ch] == nil {
+			return nil
+		}
+		node = node.children[ch]
+	}
+	return node
+}
+
+func (this *Trie) Search(word string) bool {
+	node := this.SearchPrefix(word)
+	return node != nil && node.isEnd
+}
+
+func (this *Trie) StartsWith(prefix string) bool {
+	return this.SearchPrefix(prefix) != nil
 }
 
 //207. 课程表
@@ -94,7 +139,6 @@ func testByte() {
 
 // 200. 岛屿数量
 //grid [][]byte 没有指定数量是切片
-// '1' 和 1 不是一个东西
 func numIslands(grid [][]byte) int {
 	if grid == nil || len(grid) == 0 {
 		return 0
