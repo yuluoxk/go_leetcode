@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func main() {
@@ -30,9 +31,45 @@ func main() {
 	//a := canFinish(5, pre)
 	//fmt.Println(a)
 
+	//a := []int{1, 2, 3, 5, 6, 9, 12}
+	//b := search(a, 9)
+	//fmt.Println(b)
+
 	a := []int{1, 2, 3, 5, 6, 9, 12}
-	b := search(a, 9)
+	b := minSubArrayLen(11, a)
 	fmt.Println(b)
+}
+
+// 209. 长度最小的子数组 _滑动窗口
+func minSubArrayLen(target int, nums []int) int {
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+	ans := math.MaxInt32
+	start, end := 0, 0
+	sum := 0
+	for end < n {
+		sum = sum + nums[end]
+		for sum >= target {
+			ans = min(ans, end-start+1)
+			sum -= nums[start]
+			start += 1
+		}
+		end += 1
+	}
+
+	if ans == math.MaxInt32 {
+		return 0
+	}
+	return ans
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
 }
 
 //704. 二分查找
