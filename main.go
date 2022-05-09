@@ -26,9 +26,30 @@ func main() {
 	//fmt.Println(lp.Next.Next.Next.Val)
 	//fmt.Println(lp.Next.Next.Next.Next.Val)
 	//fmt.Println(lp.Next.Next.Next.Next.Val)
-	pre := [][]int{{1, 0}, {1, 2}, {2, 3}, {3, 4}}
-	a := canFinish(5, pre)
-	fmt.Println(a)
+	//pre := [][]int{{1, 0}, {1, 2}, {2, 3}, {3, 4}}
+	//a := canFinish(5, pre)
+	//fmt.Println(a)
+
+	a := []int{1, 2, 3, 5, 6, 9, 12}
+	b := search(a, 9)
+	fmt.Println(b)
+}
+
+//704. 二分查找
+func search(nums []int, target int) int {
+	low, high := 0, len(nums)-1
+	for low <= high {
+		mid := (high-low)/2 + low
+		num := nums[mid]
+		if num == target {
+			return mid
+		} else if num > target {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+	return -1
 }
 
 // 208. 实现 Trie (前缀树)
