@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 func main() {
@@ -35,9 +36,73 @@ func main() {
 	//b := search(a, 9)
 	//fmt.Println(b)
 
-	a := []int{1, 2, 3, 5, 6, 9, 12}
-	b := minSubArrayLen(11, a)
+	//a := []int{2, 3,1,2,4,3}
+	//b := minSubArrayLenn(7, a)
+	//fmt.Println(b)
+
+	a := []int{3, 2, 1, 5, 6, 4}
+	b := findKthLargest(a, 2)
 	fmt.Println(b)
+}
+
+// 215. 数组中的第K个最大元素
+func findKthLargest(nums []int, k int) int {
+	heapSize := len(nums)
+	makeMaxHeap(nums, heapSize)
+	for i := len(nums) - 1; i >= len(nums)-k+1; i-- {
+		nums[0], nums[i] = nums[i], nums[0]
+		heapSize--
+		makeMaxHeap(nums, heapSize)
+	}
+	return nums[0]
+}
+
+func makeMaxHeap(nums []int, heapSize int) {
+	for i := heapSize / 2; i >= 0; i-- {
+		maxHeapify(nums, i, heapSize)
+	}
+}
+
+func maxHeapify(nums []int, i int, heapSize int) {
+	left, right, largest := 2*i+1, 2*i+2, i
+	if left < heapSize && nums[left] > nums[largest] {
+		largest = left
+	}
+	if right < heapSize && nums[right] > nums[largest] {
+		largest = right
+	}
+	if largest != i {
+		nums[i], nums[largest] = nums[largest], nums[i]
+		maxHeapify(nums, largest, heapSize)
+	}
+}
+
+// 209. 长度最小的子数组_二分查找
+func minSubArrayLenn(target int, nums []int) int {
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+
+	ans := math.MaxInt32
+	sums := make([]int, n+1)
+	sums[0] = 0
+	for i := 1; i < n; i++ {
+		sums[i] = sums[i-1] + nums[i-1]
+	}
+
+	for i := 0; i <= n; i++ {
+		target = target + sums[i]
+		bound := sort.SearchInts(sums, target)
+		if bound <= n {
+			ans = min(ans, bound)
+		}
+	}
+
+	if ans == math.MaxInt32 {
+		return 0
+	}
+	return ans
 }
 
 // 209. 长度最小的子数组 _滑动窗口
@@ -47,18 +112,25 @@ func minSubArrayLen(target int, nums []int) int {
 		return 0
 	}
 	ans := math.MaxInt32
-	start, end := 0, 0
-	sum := 0
-	for end < n {
-		sum = sum + nums[end]
-		for sum >= target {
-			ans = min(ans, end-start+1)
-			sum -= nums[start]
-			start += 1
-		}
-		end += 1
+	sums := make([]int, n+1)
+	// 为了方便计算，令 size = n + 1
+	// sums[0] = 0 意味着前 0 个元素的前缀和为 0
+	// sums[1] = A[0] 前 1 个元素的前缀和为 A[0]
+	// 以此类推
+	for i := 1; i <= n; i++ {
+		sums[i] = sums[i-1] + nums[i-1]
 	}
-
+	for i := 1; i <= n; i++ {
+		target := target + sums[i-1]
+		bound := sort.SearchInts(sums, target)
+		fmt.Println(bound)
+		if bound < 0 {
+			bound = -bound - 1
+		}
+		if bound <= n {
+			ans = min(ans, bound-(i-1))
+		}
+	}
 	if ans == math.MaxInt32 {
 		return 0
 	}
