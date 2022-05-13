@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"sort"
+	"time"
 )
 
 func main() {
@@ -40,12 +42,53 @@ func main() {
 	//b := minSubArrayLenn(7, a)
 	//fmt.Println(b)
 
-	a := []int{3, 2, 1, 5, 6, 4}
-	b := findKthLargest(a, 2)
+	a := []int{1}
+	b := findKthLargest_(a, 1)
 	fmt.Println(b)
 }
 
-// 215. 数组中的第K个最大元素
+// 215. 数组中的第K个最大元素_快速排序随机选择
+
+func findKthLargest_(nums []int, k int) int {
+	rand.Seed(time.Now().UnixNano())
+	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
+}
+
+func quickSelect(nums []int, left, right, index int) int {
+	if left == right {
+		return nums[left]
+	}
+	q := randomPartition(nums, left, right)
+	if q == index {
+		return nums[q]
+	} else if q < index {
+		return quickSelect(nums, q+1, right, index)
+
+	} else {
+		return quickSelect(nums, left, q-1, index)
+	}
+}
+
+func randomPartition(nums []int, left, right int) int {
+	i := rand.Int()%(right-left) + left
+	nums[i], nums[right] = nums[right], nums[i]
+	return partition(nums, left, right)
+}
+
+func partition(nums []int, left, right int) int {
+	pivot := nums[right]
+	j := left - 1
+	for i := left; i < right; i++ {
+		if nums[i] <= pivot {
+			j++
+			nums[i], nums[j] = nums[j], nums[i]
+		}
+	}
+	nums[right], nums[j+1] = nums[j+1], nums[right]
+	return j + 1
+}
+
+// 215. 数组中的第K个最大元素_堆排
 func findKthLargest(nums []int, k int) int {
 	heapSize := len(nums)
 	makeMaxHeap(nums, heapSize)
