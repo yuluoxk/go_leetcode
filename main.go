@@ -42,13 +42,75 @@ func main() {
 	//b := minSubArrayLenn(7, a)
 	//fmt.Println(b)
 
-	a := []int{1}
-	b := findKthLargest_(a, 1)
+	//a := []int{1}
+	//b := findKthLargest_(a, 1)
+	//fmt.Println(b)
+
+	//a := [][]byte{{'1','0','1','0','0'},{'1','0','1','1','1'},{'1','1','1','1','1'},{'1','0','0','1','0'}}
+	//b := maximalSquare(a)
+	//fmt.Println(b)
+
+	a := [][]int{{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}}
+	b := countSquares(a)
 	fmt.Println(b)
 }
 
-// 215. 数组中的第K个最大元素_快速排序随机选择
+//1277. 统计全为 1 的正方形子矩阵
+func countSquares(matrix [][]int) int {
+	dp := make([][]int, len(matrix))
+	ans := 0
 
+	for i := 0; i < len(matrix); i++ {
+		dp[i] = make([]int, len(matrix[i]))
+		for j := 0; j < len(matrix[i]); j++ {
+			if i == 0 || j == 0 {
+				dp[i][j] = matrix[i][j]
+			} else if matrix[i][j] == 0 {
+				dp[i][j] = 0
+			} else {
+				dp[i][j] = min(min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + 1
+			}
+			ans += dp[i][j]
+		}
+	}
+
+	return ans
+}
+
+//221. 最大正方形
+func maximalSquare(matrix [][]byte) int {
+	dp := make([][]int, len(matrix))
+	maxSize := 0
+
+	if len(matrix) == 0 {
+		return 0
+	}
+
+	for i := 0; i < len(matrix); i++ {
+		dp[i] = make([]int, len(matrix[i]))
+		for j := 0; j < len(matrix[i]); j++ {
+			dp[i][j] = int(matrix[i][j] - '0')
+			if dp[i][j] == 1 {
+				maxSize = 1
+			}
+		}
+	}
+
+	for i := 1; i < len(matrix); i++ {
+		for j := 1; j < len(matrix[i]); j++ {
+			if dp[i][j] == 1 {
+				dp[i][j] = min(min(dp[i][j-1], dp[i-1][j]), dp[i-1][j-1]) + 1
+				if dp[i][j] > maxSize {
+					maxSize = dp[i][j]
+				}
+			}
+		}
+	}
+
+	return maxSize * maxSize
+}
+
+// 215. 数组中的第K个最大元素_快速排序随机选
 func findKthLargest_(nums []int, k int) int {
 	rand.Seed(time.Now().UnixNano())
 	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
