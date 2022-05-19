@@ -55,6 +55,24 @@ func main() {
 	fmt.Println(b)
 }
 
+//226. 翻转二叉树
+func invertTree(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	left := invertTree(root.Left)
+	right := invertTree(root.Right)
+	root.Left = right
+	root.Right = left
+	return root
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 //1277. 统计全为 1 的正方形子矩阵
 func countSquares(matrix [][]int) int {
 	dp := make([][]int, len(matrix))
