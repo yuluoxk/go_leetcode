@@ -97,6 +97,36 @@ func isPalindrome(head *ListNode) bool {
 	return true
 }
 
+//234. 回文链表
+func isPalindrome2(head *ListNode) bool {
+	if head == nil || head.Next == nil {
+		return true
+	}
+
+	var prev *ListNode = nil
+	fast, slow := head, head
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		curr := slow.Next
+		slow.Next = prev
+		prev = slow
+		slow = curr
+	}
+
+	if fast != nil {
+		slow = slow.Next
+	}
+
+	for slow != nil && prev != nil {
+		if slow.Val != prev.Val {
+			return false
+		}
+		slow = slow.Next
+		prev = prev.Next
+	}
+	return true
+}
+
 //226. 翻转二叉树
 func invertTree(root *TreeNode) *TreeNode {
 	if root == nil {
