@@ -55,6 +55,48 @@ func main() {
 	fmt.Println(b)
 }
 
+//206. 反转链表 —迭代
+func reverseList1(head *ListNode) *ListNode {
+	var prev *ListNode = nil
+	curr := head
+	for curr != nil {
+		next := curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
+	}
+	return prev
+}
+
+//206. 反转链表 —递归
+func reverseList2(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	p := reverseList2(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return p
+}
+
+//234. 回文链表
+func isPalindrome(head *ListNode) bool {
+	vals := []int{}
+	for head != nil {
+		vals = append(vals, head.Val)
+		head = head.Next
+	}
+	start, end := 0, len(vals)-1
+	for start < end {
+		if vals[start] != vals[end] {
+			return false
+		}
+		start++
+		end--
+	}
+	return true
+}
+
 //226. 翻转二叉树
 func invertTree(root *TreeNode) *TreeNode {
 	if root == nil {
