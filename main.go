@@ -50,9 +50,47 @@ func main() {
 	//b := maximalSquare(a)
 	//fmt.Println(b)
 
-	a := [][]int{{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}}
-	b := countSquares(a)
+	a := []int{1, 2, 3, 4}
+	b := productExceptSelf(a)
 	fmt.Println(b)
+}
+
+//238. 除自身以外数组的乘积
+func productExceptSelf(nums []int) []int {
+	length := len(nums)
+	ans := make([]int, length)
+
+	ans[0] = 1
+	for i := 1; i < length; i++ {
+		ans[i] = ans[i-1] * nums[i-1]
+	}
+	r := 1
+	for i := length - 1; i >= 0; i-- {
+		ans[i] = ans[i] * r
+		r = r * nums[i]
+	}
+	return ans
+}
+
+//238. 除自身以外数组的乘积 (左右乘积列表)
+func productExceptSelf1(nums []int) []int {
+	length := len(nums)
+	left, right, ans := make([]int, length), make([]int, length), make([]int, length)
+	left[0] = 1
+	for i := 1; i < length; i++ {
+		left[i] = left[i-1] * nums[i-1]
+	}
+
+	right[length-1] = 1
+	for i := length - 2; i >= 0; i-- {
+		right[i] = right[i+1] * nums[i+1]
+	}
+
+	for i := 0; i < length; i++ {
+		ans[i] = left[i] * right[i]
+	}
+
+	return ans
 }
 
 //236. 二叉树的最近公共祖先
