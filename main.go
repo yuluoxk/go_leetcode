@@ -51,8 +51,20 @@ func main() {
 	//fmt.Println(b)
 
 	a := [][]int{{5}, {6}}
-	b := searchMatrix(a, 6)
+	b := searchMatrix1(a, 6)
 	fmt.Println(b)
+}
+
+//240. 搜索二维矩阵 II 二分查找
+func searchMatrix1(matrix [][]int, target int) bool {
+	for _, row := range matrix {
+		fmt.Println(row)
+		i := sort.SearchInts(row, target)
+		if i < len(row) && row[i] == target {
+			return true
+		}
+	}
+	return false
 }
 
 //240. 搜索二维矩阵 II Z字形查找
