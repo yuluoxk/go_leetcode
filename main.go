@@ -50,9 +50,26 @@ func main() {
 	//b := maximalSquare(a)
 	//fmt.Println(b)
 
-	a := []int{1, 2, 3, 4}
-	b := productExceptSelf(a)
+	a := [][]int{{5}, {6}}
+	b := searchMatrix(a, 6)
 	fmt.Println(b)
+}
+
+//240. 搜索二维矩阵 II Z字形查找
+func searchMatrix(matrix [][]int, target int) bool {
+	m := len(matrix)
+	n := len(matrix[0])
+	i, j := 0, n-1
+	for i < m && j >= 0 {
+		if matrix[i][j] == target {
+			return true
+		} else if matrix[i][j] > target {
+			j--
+		} else {
+			i++
+		}
+	}
+	return false
 }
 
 //238. 除自身以外数组的乘积
