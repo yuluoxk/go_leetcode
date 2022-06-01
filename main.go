@@ -50,9 +50,22 @@ func main() {
 	//b := maximalSquare(a)
 	//fmt.Println(b)
 
-	a := [][]int{{5}, {6}}
-	b := searchMatrix1(a, 6)
+	a := 3
+	b := numSquares(a)
 	fmt.Println(b)
+}
+
+//279. 完全平方数 动态规划
+func numSquares(n int) int {
+	f := make([]int, n+1)
+	for i := 1; i <= n; i++ {
+		minn := math.MaxInt32
+		for j := 1; j*j <= i; j++ {
+			minn = min(minn, f[i-j*j])
+		}
+		f[i] = 1 + minn
+	}
+	return f[n]
 }
 
 //240. 搜索二维矩阵 II 二分查找
