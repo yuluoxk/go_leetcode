@@ -50,8 +50,27 @@ func main() {
 	//b := maximalSquare(a)
 	//fmt.Println(b)
 
-	a := []int{0, 1, 0, 3, 12}
-	moveZeroes(a)
+	a := []int{0, 1, 0, 2, 12}
+	b := findDuplicate(a)
+	fmt.Println(b)
+}
+
+//287. 寻找重复数 环形链表
+func findDuplicate(nums []int) int {
+	slow, fast := 0, 0
+	slow = nums[slow]
+	fast = nums[nums[fast]]
+	for slow != fast {
+		slow = nums[slow]
+		fast = nums[nums[fast]]
+	}
+
+	pre := 0
+	for pre != slow {
+		slow = nums[slow]
+		pre = nums[pre]
+	}
+	return pre
 }
 
 //142. 环形链表 II 快慢指针
