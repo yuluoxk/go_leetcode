@@ -54,6 +54,30 @@ func main() {
 	moveZeroes(a)
 }
 
+//142. 环形链表 II 快慢指针
+func detectCycle(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return nil
+	}
+	slow, fast := head, head
+	for fast != nil {
+		slow = slow.Next
+		if fast.Next == nil {
+			return nil
+		}
+		fast = fast.Next.Next
+		if fast == slow {
+			ptr := head
+			for slow != ptr {
+				slow = slow.Next
+				ptr = ptr.Next
+			}
+			return ptr
+		}
+	}
+	return nil
+}
+
 //141. 环形链表 快慢指针
 func hasCycle(head *ListNode) bool {
 	if head == nil || head.Next == nil {
