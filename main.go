@@ -50,9 +50,40 @@ func main() {
 	//b := maximalSquare(a)
 	//fmt.Println(b)
 
-	a := 3
-	b := numSquares(a)
-	fmt.Println(b)
+	a := []int{0, 1, 0, 3, 12}
+	moveZeroes(a)
+}
+
+//283. 移动零 双指针
+func moveZeroes(nums []int) {
+	left, right, n := 0, 0, len(nums)
+	for right < n {
+		if nums[right] != 0 {
+			nums[right], nums[left] = nums[left], nums[right]
+			left++
+		}
+		right++
+	}
+}
+
+//283. 移动零
+func moveZeroes1(nums []int) {
+	len := len(nums)
+	for i := 0; i < len; i++ {
+		a := nums[i]
+		if a != 0 && i > 0 {
+			for j := 0; j < i; j++ {
+				if nums[j] == 0 {
+					temp := nums[i]
+					nums[i] = nums[j]
+					nums[j] = temp
+					i = j
+					break
+				}
+			}
+		}
+	}
+	fmt.Println(nums)
 }
 
 //279. 完全平方数 动态规划
